@@ -1,15 +1,7 @@
-use std::fs::File;
-use std::io::{BufRead, BufReader};
-
 fn main() {
-    let filename = "assets/input.txt";
-    let file = File::open(filename).unwrap();
-    let reader = BufReader::new(file);
-
     let mut curr_sum = 0;
     let mut max = 0;
-    for line in reader.lines() {
-        let line = line.unwrap();
+    for line in common::lines("day1-1/assets/input.txt") {
         if line.is_empty() {
             if curr_sum > max {
                 max = curr_sum;
