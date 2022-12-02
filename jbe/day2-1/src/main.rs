@@ -24,11 +24,11 @@ fn main() {
 fn get_score(game_round: (&str, &str)) -> u32 {
     match game_round {
         (ROCK,     ROCK_ME)     => ROCK_SCORE     + DRAW_SCORE,
-        (SCISSORS, ROCK_ME)     => ROCK_SCORE     + WIN_SCORE,
         (PAPER,    ROCK_ME)     => ROCK_SCORE     + LOSE_SCORE,
+        (SCISSORS, ROCK_ME)     => ROCK_SCORE     + WIN_SCORE,
         (ROCK,     PAPER_ME)    => PAPER_SCORE    + WIN_SCORE,
-        (SCISSORS, PAPER_ME)    => PAPER_SCORE    + LOSE_SCORE,
         (PAPER,    PAPER_ME)    => PAPER_SCORE    + DRAW_SCORE,
+        (SCISSORS, PAPER_ME)    => PAPER_SCORE    + LOSE_SCORE,
         (ROCK,     SCISSORS_ME) => SCISSORS_SCORE + LOSE_SCORE,
         (PAPER,    SCISSORS_ME) => SCISSORS_SCORE + WIN_SCORE,
         (SCISSORS, SCISSORS_ME) => SCISSORS_SCORE + DRAW_SCORE,
