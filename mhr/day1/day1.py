@@ -1,9 +1,6 @@
 import numpy as np
 
-
-def load_input() -> list[str]:
-    with open('input.txt') as infile:
-        return infile.readlines()
+from common import load_input
 
 
 def find_calories_of_top_n_elves(input_data: list[str], top_n: int = 1) -> int:
