@@ -12,7 +12,8 @@ namespace aoc2022
             string filepath = "input.txt";
 
             Dictionary<string, int> singleValue = new();
-            singleValue.Add("X", 1);
+            singleValue.Add("X", 
+			    1);
             singleValue.Add("Y", 2);
             singleValue.Add("Z", 3);
 
