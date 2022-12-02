@@ -4,11 +4,13 @@ ROCK, PAPER, SCISSORS = range(3)
 
 
 def translate_first(c):
-    return {"A": ROCK, "B": PAPER, "C": SCISSORS}[c]
+    # return {"A": ROCK, "B": PAPER, "C": SCISSORS}[c]
+    return ord(c) - ord("A")
 
 
 def translate_second(c, opponent):
-    delta = {"X": -1, "Y": 0, "Z": 1}[c]
+    # delta = {"X": -1, "Y": 0, "Z": 1}[c]
+    delta = ord(c) - ord("Y")
     return (opponent + delta) % 3
 
 

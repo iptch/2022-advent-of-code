@@ -4,18 +4,20 @@ ROCK, PAPER, SCISSORS = range(3)
 
 
 def translate_first(c):
-    return {"A": ROCK, "B": PAPER, "C": SCISSORS}[c]
+    # return {"A": ROCK, "B": PAPER, "C": SCISSORS}[c]
+    return ord(c) - ord("A")
 
 
 def translate_second(c):
-    return {"X": ROCK, "Y": PAPER, "Z": SCISSORS}[c]
+    # return {"X": ROCK, "Y": PAPER, "Z": SCISSORS}[c]
+    return ord(c) - ord("X")
 
 
-def points(them, me):
-    if them == me:
+def points(opponent, me):
+    if opponent == me:
         # Draw
         points = 3
-    elif (them + 1) % 3 == me:
+    elif (opponent + 1) % 3 == me:
         # I win
         points = 6
     else:
@@ -27,9 +29,9 @@ def points(them, me):
 def solve(lines):
     total = 0
     for line in lines:
-        them, me = line.split()
+        opponent, me = line.split()
         total += points(
-            translate_first(them),
+            translate_first(opponent),
             translate_second(me),
         )
     return total
