@@ -11,15 +11,13 @@ const PAPER_SCORE: u32 = 2;
 const SCISSORS_SCORE: u32 = 3;
 
 fn main() {
-    let mut sum = 0;
-    for line in common::lines("day2-2/assets/input.txt") {
-        let (other, res) = line.split_once(' ').unwrap();
-        sum += get_score(other, res)
-    }
+    let sum: u32 = common::lines("day2-2/assets/input.txt")
+        .map(|line| get_score(line.split_once(' ').unwrap()))
+        .sum();
     println!("The final score is {}", sum);
 }
 
-fn get_score(other: &str, result: &str) -> u32 {
+fn get_score((other, result): (&str, &str)) -> u32 {
     match result {
         WIN => {
             6 + match other {
