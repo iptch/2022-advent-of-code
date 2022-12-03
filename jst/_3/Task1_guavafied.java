@@ -1,44 +1,33 @@
 package _3;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-public class Task1 {
+import static com.google.common.collect.Sets.intersection;
+
+public class Task1_guavafied {
 
     public static void main(String[] args) {
-
-        List<String> listOfLowercaseCharacters = List.of("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
-        Set<String> setOfLowercaseCharacters = Set.copyOf(listOfLowercaseCharacters);
-
         String input = getInput();
+        String[] lines = input.split("\n");
 
-        String[] splitInput = input.split("\n");
-        ArrayList<String> duplicates = new ArrayList<>();
+        int result = 0;
 
-        Integer sum = 0;
-        for (String item : splitInput) {
+        for (String line : lines) {
+            String firstHalf = line.substring(0, line.length() / 2);
+            String secondHalf = line.substring(line.length() / 2);
 
-            String theStart = item.substring(0, item.length() / 2);
-            String theEnd = item.substring(item.length() / 2);
+            Integer character = intersection(chars(firstHalf), chars(secondHalf)).iterator().next();
 
-            for (int i = 0; i < theStart.length(); i++) {
-
-                String currentChar = String.valueOf(theStart.charAt(i));
-                if (theEnd.contains(currentChar)) {
-                    duplicates.add(currentChar);
-                    break;
-                }
-            }
+            int value = Character.isLowerCase(character) ? (character - ('a') + 1) : (character - 'A' + 27);
+            result += value;
         }
 
-        for (String duplicate : duplicates) {
-            sum += setOfLowercaseCharacters.contains(duplicate)
-                    ? listOfLowercaseCharacters.indexOf(duplicate) + 1
-                    : listOfLowercaseCharacters.indexOf(duplicate.toLowerCase()) + 1 + 26;
-        }
+        System.out.println(result);
+    }
 
-        System.out.println(sum);
+    private static Set<Integer> chars(String firstHalf) {
+        return firstHalf.chars().boxed().collect(Collectors.toSet());
     }
 
     private static String getInput() {
