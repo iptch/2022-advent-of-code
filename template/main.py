@@ -5,7 +5,8 @@ def load():
     res = []
     with open(PATH) as f:
         for line in f:
-            res.append([line[0], line[2]])
+            processed = line  # process the lines
+            res.append(processed)
     return res
 
 
