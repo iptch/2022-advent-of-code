@@ -52,7 +52,7 @@ namespace aoc2022
 
         public static int convertToPriority(char letter)
         {
-            if ((int)letter < 97) //uppercase
+            if ((int)letter < 97)
             {
                 return (int)letter - 38;
             }
