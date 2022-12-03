@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class Task1 {
+public class Task2 {
 
     public static void main(String[] args) {
 
@@ -14,30 +14,32 @@ public class Task1 {
         String input = getInput();
 
         String[] splitInput = input.split("\n");
+
         ArrayList<String> duplicates = new ArrayList<>();
 
         Integer sum = 0;
-        for (String item : splitInput) {
 
-            String theStart = item.substring(0, item.length() / 2);
-            String theEnd = item.substring(item.length() / 2);
+        for (int i = 0; i < splitInput.length; i = i + 3) {
 
-            for (int i = 0; i < theStart.length(); i++) {
+            String firstElve = splitInput[i];
+            String secondElve = splitInput[i + 1];
+            String thirdElve = splitInput[i + 2];
 
-                String currentChar = String.valueOf(theStart.charAt(i));
-                if (theEnd.contains(currentChar)) {
+            for (int j = 0; j < firstElve.length(); j++) {
+                String currentChar = String.valueOf(firstElve.charAt(j));
+                if (secondElve.contains(currentChar) && thirdElve.contains(currentChar)) {
                     duplicates.add(currentChar);
                     break;
                 }
             }
         }
 
+
         for (String duplicate : duplicates) {
             sum += setOfLowercaseCharacters.contains(duplicate)
                     ? listOfLowercaseCharacters.indexOf(duplicate) + 1
                     : listOfLowercaseCharacters.indexOf(duplicate.toLowerCase()) + 1 + 26;
         }
-
         System.out.println(sum);
     }
 
