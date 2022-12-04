@@ -1,4 +1,4 @@
-from common import load_input
+from common import load_lines
 
 PRIORITY = {
     'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7, 'h': 8, 'i': 9, 'j': 10, 'k': 11, 'l': 12, 'm': 13,
@@ -40,7 +40,7 @@ def calculate_priorities_sum(items):
 
 
 if __name__ == '__main__':
-    input_lines = load_input(day=3)
+    input_lines = load_lines(day=3)
 
     # Task 1
     shared_items = find_shared_items(input_lines)

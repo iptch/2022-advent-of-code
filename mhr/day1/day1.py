@@ -1,6 +1,6 @@
 import numpy as np
 
-from common import load_input
+from common import load_lines
 
 
 def find_calories_of_top_n_elves(input_data: list[str], top_n: int = 1) -> int:
@@ -23,4 +23,4 @@ def find_calories_of_top_n_elves(input_data: list[str], top_n: int = 1) -> int:
 
 
 if __name__ == "__main__":
-    print(find_calories_of_top_n_elves(load_input(day=1), top_n=3))
+    print(find_calories_of_top_n_elves(load_lines(day=1), top_n=3))

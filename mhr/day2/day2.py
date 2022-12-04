@@ -1,6 +1,6 @@
 from enum import Enum
 
-from common import load_input
+from common import load_lines
 
 
 class Hand(Enum):
@@ -93,7 +93,7 @@ def get_total_score(hands: list[tuple[Hand, Hand]]) -> int:
 
 
 if __name__ == "__main__":
-    input_data = [line.strip() for line in load_input(day=2)]
+    input_data = [line.strip() for line in load_lines(day=2)]
     hands = map_input_data_to_hands_interpreted_strategy(input_data)
     interpreted_total_score = get_total_score(map_input_data_to_hands_interpreted_strategy(input_data))
     print(f'Total score for interpreted strategy: {interpreted_total_score}')
