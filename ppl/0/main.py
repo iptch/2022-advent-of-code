@@ -1,7 +1,8 @@
 def puzzle_1():
     result = ""
     input_txt = open("input.txt", "r")
-    for line in input_txt:
+    lines = input_txt.read().splitlines()
+    for line in lines:
         pass
 
     return result
@@ -10,7 +11,8 @@ def puzzle_1():
 def puzzle_2():
     result = ""
     input_txt = open("input.txt", "r")
-    for line in input_txt:
+    lines = input_txt.read().splitlines()
+    for line in lines:
         pass
 
     return result
