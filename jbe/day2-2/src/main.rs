@@ -18,7 +18,7 @@ fn main() {
     let sum: u32 = common::lines("day2-2/assets/input.txt")
         .map(|line| get_score(line.split_once(' ').unwrap()))
         .sum();
-    println!("The final score is {}", sum);
+    println!("The final score is {sum}");
 }
 
 fn get_score(game_round: (&str, &str)) -> u32 {

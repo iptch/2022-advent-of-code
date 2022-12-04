@@ -2,6 +2,9 @@
 
 ## Building
 
+> This will require at least Rust version `1.67.0-nightly` to compile. It uses experimental iterator
+> functions.
+
 To build the entire code base use:
 
 ```bash

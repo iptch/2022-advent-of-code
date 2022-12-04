@@ -33,3 +33,17 @@ version = "0.1.0"
 dependencies = [
  "common",
 ]
+
+[[package]]
+name = "day3-1"
+version = "0.1.0"
+dependencies = [
+ "common",
+]
+
+[[package]]
+name = "day3-2"
+version = "0.1.0"
+dependencies = [
+ "common",
+]

@@ -15,5 +15,5 @@ fn main() {
     if curr_sum > max {
         max = curr_sum;
     }
-    println!("Highest count is: {}", max);
+    println!("Highest count is: {max}");
 }
