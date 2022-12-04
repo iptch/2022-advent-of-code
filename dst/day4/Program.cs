@@ -1,0 +1,60 @@
+﻿using System;
+using System.IO;
+using System.Text;
+
+namespace aoc2022
+{
+    class day3
+    {
+        public static void Main(string[] args)
+        {
+            // string filepath = "sample_input.txt";
+            string filepath = "input.txt";
+
+            // Part one
+            using (StreamReader sr = File.OpenText(filepath))
+            {
+                string? line = "";
+                int sum = 0;
+                int fully_contained_pairs = 0;
+                int overlap = 0;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    char[] delimiters = { ',', '-' };
+                    int[] num = line.Split(delimiters).Select(x => int.Parse(x)).ToArray();
+
+                    // Part 1
+                    if ((num[1] - num[0]) >= (num[3] - num[2]))
+                    {
+                        Console.WriteLine("Range 1 is larger or equal size");
+                        if (num[2] >= num[0] && num[3] <= num[1])
+                        {
+                            Console.WriteLine("Range 1 contains Range 2");
+                            fully_contained_pairs++;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Range 2 is larger");
+                        if (num[0] >= num[2] && num[1] <= num[3])
+                        {
+                            Console.WriteLine("Range 2 contains Range 1");
+                            fully_contained_pairs++;
+                        }
+                    }
+                    Console.WriteLine("Number of fully contained pairs: {0}",
+                        fully_contained_pairs);
+
+                    // Part 2
+                    if ((num[2] >= num[0] && num[2] <= num[1]) || (num[0] >= num[2] && num[0] <= num[3]))
+                    {
+                        overlap++;
+                    }
+
+                    Console.WriteLine("Number of overlaps: {0}",
+                        overlap);
+                }
+            }
+        }
+    }
+}
