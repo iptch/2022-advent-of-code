@@ -3,7 +3,7 @@ fn main() {
         .map(|line| parse_line(&line))
         .filter(|(range1, range2)| range1.overlaps(range2))
         .count();
-    println!("The number of contained ranges is: {count}")
+    println!("The number of overlapping ranges is: {count}")
 }
 
 struct Range {

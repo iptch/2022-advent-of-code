@@ -54,7 +54,7 @@ fn find_duplicate(backpack1: &str, backpack2: &str, backpack3: &str) -> Option<c
             return Some(ch0);
         }
 
-        // first character is guaranteed to be the smallest, if this can be increased, to so. If it
+        // first character is guaranteed to be the smallest, if this can be increased, do so. If it
         // cannot, then no solution can be reached.
         if state[0].1 < state[0].2 - 1 {
             state[0].1 += 1;
