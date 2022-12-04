@@ -11,7 +11,6 @@ namespace aoc2022
             // string filepath = "sample_input.txt";
             string filepath = "input.txt";
 
-            // Part one
             using (StreamReader sr = File.OpenText(filepath))
             {
                 string? line = "";
