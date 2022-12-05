@@ -7,9 +7,9 @@ with open('../data.txt') as f:
 # Reading tower description
 number_of_towers = 9
 towers = {f'{t + 1}': [] for t in range(number_of_towers)}
-for l in lines[:description_lines - 2]:
+for line in lines[:description_lines - 2]:
     for t in range(number_of_towers):
-        c = l[4 * t + 1]
+        c = line[4 * t + 1]
         if c != ' ':
             towers[f'{t + 1}'].append(c)
 
@@ -25,8 +25,8 @@ def move(tower_from, tower_to, towers):
 
 # Reading reshuffling plan
 regex = r"move\s(\d+)\sfrom\s(\d+)\sto\s(\d+)$"
-for l in lines[description_lines:]:
-    matches = re.match(regex, l)
+for line in lines[description_lines:]:
+    matches = re.match(regex, line)
     moves = int(matches[1])
     tower_from = matches[2]
     tower_to = matches[3]
