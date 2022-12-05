@@ -1,8 +1,11 @@
+import re
+
 def puzzle_1():
     result = ""
     input_txt = open("input.txt", "r")
     lines = input_txt.read().splitlines()
     for line in lines:
+        groups = re.match(r"(\d+)-(\d+),(\d+)-(\d+)", line).groups()
         pass
 
     return result
@@ -13,6 +16,7 @@ def puzzle_2():
     input_txt = open("input.txt", "r")
     lines = input_txt.read().splitlines()
     for line in lines:
+        groups = re.match(r"(\d+)-(\d+),(\d+)-(\d+)", line).groups()
         pass
 
     return result
