@@ -22,18 +22,14 @@ namespace aoc2022
 
             InitializeStacks(NUMBER_OF_STACKS, stacks);
             ParseStacks(filepath, NUMBER_OF_STACKS, STACK_HEIGHT, stacks);
-            //PrintS
             ParseCommatacks(stacks, NUMBER_OF_STACKS); nds(filepath, STACK_HEIGHT, commands);
-            //PrintCommands(commands);
             commands.ForEach(item => executeCommand(stacks, item));
-            // PrintStacks(stacks, NUMBER_OF_STACKS);
             PrintTopItems(stacks);
 
             stacks.Clear();
             InitializeStacks(NUMBER_OF_STACKS, stacks);
             ParseStacks(filepath, NUMBER_OF_STACKS, STACK_HEIGHT, stacks);
             commands.ForEach(item => executeCommandPartTwo(stacks, item));
-            //PrintStacks(stacks, NUMBER_OF_STACKS);
             PrintTopItems(stacks);
 
         }
@@ -114,8 +110,6 @@ namespace aoc2022
                     stack_level++;
                 }
             }
-            // Reverse crates
-            // crates.ForEach(crate => crate.Reverse());
         }
 
         private static void InitializeStacks(int NUMBER_OF_CRATES, List<List<char>> crates)
