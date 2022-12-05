@@ -3,11 +3,11 @@ use regex::Regex;
 use std::collections::LinkedList;
 
 fn main() {
-    let stack_def: Vec<String> = common::lines("day5-1/assets/input.txt")
+    let stack_def: Vec<String> = common::lines("day5-2/assets/input.txt")
         .take_while(|line| !line.is_empty())
         .collect();
     let mut stacks = parse_stacks(stack_def);
-    common::lines("day5-1/assets/input.txt")
+    common::lines("day5-2/assets/input.txt")
         .skip_while(|line| !line.starts_with("move"))
         .map(|line| parse_instruction(&line))
         .for_each(|instr| instr.exec(&mut stacks));
