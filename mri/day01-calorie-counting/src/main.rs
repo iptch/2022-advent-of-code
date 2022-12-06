@@ -29,7 +29,7 @@ fn main() {
     let total_calories_top3 = aggregated_calories[0] + aggregated_calories[1] + aggregated_calories[2];
 
     println!("Maximum calories carried by an elf: {}", max_elf_calories);
-    println!("Total amount caried by top 3 elves: {}", total_calories_top3);
+    println!("Total amount carried by top 3 elves: {}", total_calories_top3);
 
 
 }
