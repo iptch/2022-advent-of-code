@@ -37,6 +37,12 @@ enum Node {
     Directory(String, Vec<Node>),
 }
 
+impl PartialEq<Node> for Node {
+    fn eq(&self, other: &Node) -> bool {
+        self.name() == other.name()
+    }
+}
+
 impl Node {
     fn name(&self) -> &str {
         match self {
@@ -63,7 +69,9 @@ impl Node {
         match self {
             Node::File(_, _)             => panic!("Cannot add child to file node"),
             Node::Directory(_, children) => {
-                children.push(child);
+                if !children.contains(&child) {
+                    children.push(child);
+                }
             }
         }
     }
