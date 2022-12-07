@@ -7,7 +7,7 @@ name = "common"
 version = "0.1.0"
 
 [[package]]
-name = "day01-calorie-counting"
+name = "day02-rock-paper-scissor"
 version = "0.1.0"
 dependencies = [
  "common",
