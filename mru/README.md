@@ -42,3 +42,29 @@ Part 2
 ```
 
 ### Day 4
+
+Part 1
+
+```
+./day_04/run_part1.py ./day_04/input.txt 
+```
+
+Part 2
+
+```
+./day_04/run_part1.py ./day_04/input.txt 
+```
+
+### Day 5
+
+Part 1
+
+```
+./day_05/run_part1.py ./day_05/input.txt 
+```
+
+Part 2
+
+```
+./day_05/run_part2.py ./day_05/input.txt 
+```

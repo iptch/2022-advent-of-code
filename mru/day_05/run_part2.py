@@ -48,7 +48,7 @@ def parse(file_path: str):
             line = line.strip()
 
             if i > MAX_LINE_TO_PARSE:
-               
+
                 print("***")
                 for s in range(1, 10):
                     print(STACKS[s])
@@ -60,10 +60,13 @@ def parse(file_path: str):
                     move_from = int(move_from)
                     move_to = int(move_to)
                     print('instruction', n, move_from, move_to)
+                    items = []
                     for _ in range(0, n):
                         e = STACKS[move_from].pop()
-                        STACKS[move_to].append(e)
-                        print(' copy', e)
+                        items.append(e)
+                    if len(items) > 0:
+                        items.reverse()
+                        STACKS[move_to].extend(items)
 
             else:
                 if line[POS_1] != EMPTY:
