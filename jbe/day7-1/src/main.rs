@@ -9,8 +9,8 @@ lazy_static! {
 
 fn main() {
     let mut state = State {
-        cwd: "/".into(),
-        fs: Node::Directory("/".into(), Vec::new()),
+        cwd: Vec::new(),
+        fs: Node::Directory(Vec::new(), Vec::new()),
     };
 
     common::lines("day7-1/assets/input.txt").for_each(|statement| state.parse(&statement));
@@ -26,8 +26,8 @@ fn main() {
 
 #[derive(Clone)]
 enum Node {
-    File(String, usize),
-    Directory(String, Vec<Node>),
+    File(Vec<String>, usize),
+    Directory(Vec<String>, Vec<Node>),
 }
 
 impl PartialEq<Node> for Node {
@@ -37,10 +37,10 @@ impl PartialEq<Node> for Node {
 }
 
 impl Node {
-    fn name(&self) -> &str {
+    fn name(&self) -> String {
         match self {
-            Node::File(name, _)      => name,
-            Node::Directory(name, _) => name,
+            Node::File(path, _)      => path.join("/"),
+            Node::Directory(path, _) => path.join("/"),
         }
     }
 
@@ -69,10 +69,11 @@ impl Node {
         }
     }
 
-    fn find(&mut self, path: &str) -> Option<&mut Node> {
-        if self.name() == path {
+    fn find(&mut self, path: &[String]) -> Option<&mut Node> {
+        let name = path.join("/");
+        if self.name() == name {
             return Some(self);
-        } else if !path.starts_with(self.name()) {
+        } else if !name.starts_with(&self.name()) {
             return None;
         }
         match self {
@@ -94,7 +95,7 @@ impl Node {
 }
 
 struct State {
-    cwd: String,
+    cwd: Vec<String>,
     fs: Node,
 }
 
@@ -113,28 +114,30 @@ impl State {
         let caps = FILE.captures(statement).unwrap();
         let size = caps.name("size").unwrap().as_str().parse().unwrap();
         let name = caps.name("name").unwrap().as_str().into();
-        let curr_node = self.fs.find(&self.cwd).unwrap();
-        curr_node.add_child(Node::File(name, size));
+        let mut path = self.cwd.clone();
+        let curr_node = self.fs.find(&path).unwrap();
+        path.push(name);
+        curr_node.add_child(Node::File(path, size));
     }
 
     fn parse_cd(&mut self, statement: &str) {
         let caps = CD.captures(statement).unwrap();
-        let mut name = caps.name("name").unwrap().as_str().to_string();
+        let name = caps.name("name").unwrap().as_str().to_string();
         match name.as_str() {
-            "/"  => self.cwd = name,
-            ".." => self.cwd = self.cwd.rsplit_once('/').unwrap().0.into(),
-            _    => {
-                name = format!("{}/{name}", self.cwd);
-                self.cwd = name;
-            }
+            "/"  => self.cwd = Vec::new(),
+            ".." => {
+                self.cwd.pop();
+            },
+            _    => self.cwd.push(name),
         }
     }
 
     fn parse_dir(&mut self, statement: &str) {
         let caps = DIR.captures(statement).unwrap();
-        let mut name = caps.name("name").unwrap().as_str().into();
-        name = format!("{}/{name}", self.cwd);
-        let curr_node = self.fs.find(&self.cwd).unwrap();
-        curr_node.add_child(Node::Directory(name, Vec::new()));
+        let name = caps.name("name").unwrap().as_str().into();
+        let mut path = self.cwd.clone();
+        let curr_node = self.fs.find(&path).unwrap();
+        path.push(name);
+        curr_node.add_child(Node::Directory(path, Vec::new()));
     }
 }
