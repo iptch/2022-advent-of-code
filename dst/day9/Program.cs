@@ -7,7 +7,8 @@ namespace aoc2022
     {
         public static void Main(string[] args)
         {
-            string filepath = "sample_input.txt";
+            // string filepath = "sample_input.txt";
+            string filepath = "sample_input_2.txt";
             // string filepath = "input.txt";
             List<(char, int)> parsedCommands = new();
             ParseCommands(filepath, parsedCommands);
@@ -28,16 +29,66 @@ namespace aoc2022
             tail = (0, 0);
             tailHistory.Add(tail);
 
+
+            // Part 1
             MoveHeadForAllCommands(commands, headHistory);
 
+            foreach ((int x, int y) item in headHistory)
+            {
+                (int x, int y) oldTail = tailHistory.Last();
+                (int x, int y) newTail = updateTail(item, oldTail);
+                tailHistory.Add(newTail);
+            }
+
+            int uniquePositions = tailHistory.Distinct().Count();
+            Console.WriteLine("Unique Positions: {0}", uniquePositions);
+
+            // Part 2
+
+            List<(int x, int y)> tail0 = new() { (0, 0) };
+            List<(int x, int y)> tail1 = new() { (0, 0) };
+            List<(int x, int y)> tail2 = new() { (0, 0) };
+            List<(int x, int y)> tail3 = new() { (0, 0) };
+            List<(int x, int y)> tail4 = new() { (0, 0) };
+            List<(int x, int y)> tail5 = new() { (0, 0) };
+            List<(int x, int y)> tail6 = new() { (0, 0) };
+            List<(int x, int y)> tail7 = new() { (0, 0) };
+            List<(int x, int y)> tail8 = new() { (0, 0) };
+            List<(int x, int y)> tail9 = new() { (0, 0) };
+
+            foreach ((int x, int y) item in headHistory)
+            {
+                update2(tail0, item);
+                update2(tail1, tail0.Last());
+                update2(tail2, tail1.Last());
+                update2(tail3, tail2.Last());
+                update2(tail4, tail3.Last());
+                update2(tail5, tail4.Last());
+                update2(tail6, tail5.Last());
+                update2(tail7, tail6.Last());
+                update2(tail8, tail7.Last());
+                update2(tail9, tail8.Last());
+            }
+
+            int uniquePositionsPart2 = tail9.Distinct().Count();
+            Console.WriteLine("Part 2 Unique Positions: {0}", uniquePositionsPart2);
+        }
+        private static void update2(List<(int x, int y)> tailHistory, (int x, int y) item)
+        {
+            (int x, int y) oldTail = tailHistory.Last();
+            (int x, int y) newTail = updateTail(item, oldTail);
+            tailHistory.Add(newTail);
+        }
+
+        private static (int x, int y) updateTail((int x, int y) head, (int x, int y) tail)
+        {
             (int x, int y) newTail = new();
             int dx = head.x - tail.x;
             int dy = head.y - tail.y;
-            double norm = Math.Sqrt(dx * dx + dy * dy);
 
-            if (norm < 2)
+            if (Math.Abs(dx) <= 1 && Math.Abs(dy) <= 1)
             {
-                head = tail;
+                newTail = tail;
             }
             else if (dx == 0 || dy == 0)
             {
@@ -58,40 +109,31 @@ namespace aoc2022
             {
                 if (dx == 2)
                 {
+                    newTail.x = tail.x + 1;
+                    if (dy > 0) { newTail.y = tail.y + 1; }
+                    if (dy < 0) { newTail.y = tail.y - 1; }
+                }
+                else if (dx == -2)
+                {
+                    newTail.x = tail.x - 1;
+                    if (dy > 0) { newTail.y = tail.y + 1; }
+                    if (dy < 0) { newTail.y = tail.y - 1; }
+                }
+                else if (dy == 2)
+                {
+                    newTail.y = tail.y + 1;
                     if (dx > 0) { newTail.x = tail.x + 1; }
                     if (dx < 0) { newTail.x = tail.x - 1; }
                 }
-                else if (dx == -2) { }
-                else if (dy == 2) { }
-                else if (dy == -2) { }
+                else if (dy == -2)
+                {
+                    newTail.y = tail.y - 1;
+                    if (dx > 0) { newTail.x = tail.x + 1; }
+                    if (dx < 0) { newTail.x = tail.x - 1; }
+                }
             }
 
-            // Case ||dx2 + dy2|| < 2 => don't move
-
-            //Case dx==0 || dy==0 (default)
-            // dx==0
-            // dy>0 => y=y+1
-            // dy<0 => y=y.1
-            // dy==0
-            // dx>0 => x=x+1
-            // dx<0 => x=x-1
-
-            // Case ||dx2 + dy2|| > 2
-            // dy == 2
-            // dx > 0 => x=x+1, y=y+1
-            // dx < 0 => x=x-1, y=y+1
-            // dy == -2
-            // dx == 2
-            // dx == -2
-
-
-
-
-
-
-
-
-
+            return newTail;
         }
 
         private static void MoveHeadForAllCommands(List<char> commands, List<(int x, int y)> headHistory)
@@ -142,12 +184,6 @@ namespace aoc2022
                     commands.Add(command);
                 }
             }
-
-            void moveHead((int, int) head, (char, int) command)
-            {
-
-            }
-
         }
     }
 
