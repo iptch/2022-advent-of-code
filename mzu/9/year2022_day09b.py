@@ -1,7 +1,7 @@
 from aocd import data
 
 DAY = '9'
-PART = 'a'
+PART = 'b'
 
 START_COL_INDEX = 11
 START_ROW_INDEX = 15
