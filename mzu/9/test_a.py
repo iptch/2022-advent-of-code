@@ -25,34 +25,42 @@ class Test(unittest.TestCase):
 
     def test_move_up(self):
         visited_positions = [['.'] * 6 for i in range(5)]
-        new_head, new_tail, visited_positions = part_a.move_up((4, 4), (4, 3), 4, visited_positions)
-        self.assertTupleEqual(new_head, (0, 4))
-        self.assertTupleEqual(new_tail, (1, 4))
+        head, tail = (4, 4), (4, 3)
+        for _ in range(4):
+            head, tail, visited_positions = part_a.move(head, tail, 'U', visited_positions)
+        self.assertTupleEqual(head, (0, 4))
+        self.assertTupleEqual(tail, (1, 4))
 
     def test_move_down(self):
         visited_positions = [[False] * 6 for i in range(5)]
-        new_head, new_tail, visited_positions = part_a.move_down((0, 1), (0, 2), 1, visited_positions)
-        self.assertTupleEqual(new_head, (1, 1))
-        self.assertTupleEqual(new_tail, (0, 2))
+        head, tail, visited_positions = part_a.move((0, 1), (0, 2), 'D', visited_positions)
+        self.assertTupleEqual(head, (1, 1))
+        self.assertTupleEqual(tail, (0, 2))
 
     def test_move_left(self):
         visited_positions = [[False] * 6 for i in range(5)]
-        new_head, new_tail, visited_positions = part_a.move_left((2, 5), (1, 4), 5, visited_positions)
-        self.assertTupleEqual(new_head, (2, 0))
-        self.assertTupleEqual(new_tail, (2, 1))
+        head, tail = (2, 5), (1, 4)
+        for _ in range(5):
+            head, tail, visited_positions = part_a.move(head, tail, 'L', visited_positions)
+        self.assertTupleEqual(head, (2, 0))
+        self.assertTupleEqual(tail, (2, 1))
 
     def test_move_right(self):
         visited_positions = [[False] * 6 for i in range(5)]
-        new_head, new_tail, visited_positions = part_a.move_right((1, 1), (0, 2), 4, visited_positions)
-        self.assertTupleEqual(new_head, (1, 5))
-        self.assertTupleEqual(new_tail, (1, 4))
+        head, tail = (1, 1), (0, 2)
+        for _ in range(4):
+            head, tail, visited_positions = part_a.move(head, tail, 'R', visited_positions)
+        self.assertTupleEqual(head, (1, 5))
+        self.assertTupleEqual(tail, (1, 4))
 
     def test_move(self):
         visited_positions = [[False] * 6 for i in range(5)]
         visited_positions[4][0] = True
-        new_head, new_tail, visited_positions = part_a.move((4, 0), (4, 0), 'R', 4, visited_positions)
-        self.assertTupleEqual(new_head, (4, 4))
-        self.assertTupleEqual(new_tail, (4, 3))
+        head, tail = (4, 0), (4, 0)
+        for _ in range(4):
+            head, tail, visited_positions = part_a.move(head, tail, 'R', visited_positions)
+        self.assertTupleEqual(head, (4, 4))
+        self.assertTupleEqual(tail, (4, 3))
         self.assertTrue(visited_positions[4][1])
         self.assertTrue(visited_positions[4][2])
         self.assertTrue(visited_positions[4][3])

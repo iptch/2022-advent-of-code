@@ -30,7 +30,7 @@ class Test(unittest.TestCase):
         # ......
         # ......
         # 4321H. (4 covers 5, 6, 7, 8, 9)
-        initial_rope = [(4, 4), (4, 3), (4, 2), (4, 1), (4, 0), (4, 0), (4, 0), (4, 0), (4, 0), (4, 0)]
+        rope = [(4, 4), (4, 3), (4, 2), (4, 1), (4, 0), (4, 0), (4, 0), (4, 0), (4, 0), (4, 0)]
 
         # end position:
         # ....H.
@@ -42,8 +42,10 @@ class Test(unittest.TestCase):
 
         visited_positions = [[False] * 6 for i in range(5)]
         visited_positions[4][0] = True
-        rope_after_move, visited_positions = part_b.move_up(initial_rope, 4, visited_positions)
-        self.assertListEqual(expected_rope_after_move, rope_after_move)
+
+        for _ in range(4):
+            rope, visited_positions = part_b.move(rope, 'U', visited_positions)
+        self.assertListEqual(expected_rope_after_move, rope)
         self.assertEqual(1, len([is_visited for row in visited_positions for is_visited in row if is_visited]))
 
     def test_calculate_number_of_visited_tail_positions(self):

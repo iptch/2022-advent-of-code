@@ -42,44 +42,22 @@ def move_rest_of_rope(rope, visited_positions):
     return rope, visited_positions
 
 
-def move_up(rope, distance, visited_positions):
-    for _ in range(distance):
-        rope[0] = (rope[0][0] - 1, rope[0][1])
-        rope, visited_positions = move_rest_of_rope(rope, visited_positions)
-    return rope, visited_positions
-
-
-def move_down(rope, distance, visited_positions):
-    for _ in range(distance):
-        rope[0] = (rope[0][0] + 1, rope[0][1])
-        rope, visited_positions = move_rest_of_rope(rope, visited_positions)
-    return rope, visited_positions
-
-
-def move_left(rope, distance, visited_positions):
-    for _ in range(distance):
-        rope[0] = (rope[0][0], rope[0][1] - 1)
-        rope, visited_positions = move_rest_of_rope(rope, visited_positions)
-    return rope, visited_positions
-
-
-def move_right(rope, distance, visited_positions):
-    for _ in range(distance):
-        rope[0] = (rope[0][0], rope[0][1] + 1)
-        rope, visited_positions = move_rest_of_rope(rope, visited_positions)
-    return rope, visited_positions
-
-
-def move(rope, direction, distance, visited_positions):
+def move_head(direction, rope):
     match direction:
         case 'U':
-            rope, visited_positions = move_up(rope, distance, visited_positions)
+            rope[0] = (rope[0][0] - 1, rope[0][1])
         case 'D':
-            rope, visited_positions = move_down(rope, distance, visited_positions)
+            rope[0] = (rope[0][0] + 1, rope[0][1])
         case 'L':
-            rope, visited_positions = move_left(rope, distance, visited_positions)
+            rope[0] = (rope[0][0], rope[0][1] - 1)
         case 'R':
-            rope, visited_positions = move_right(rope, distance, visited_positions)
+            rope[0] = (rope[0][0], rope[0][1] + 1)
+    return rope
+
+
+def move(rope, direction, visited_positions):
+    rope = move_head(direction, rope)
+    rope, visited_positions = move_rest_of_rope(rope, visited_positions)
     return rope, visited_positions
 
 
@@ -89,15 +67,14 @@ def calculate_number_of_visited_tail_positions(lines, number_of_cols, number_of_
     visited_positions[start_row_idx][start_col_idx] = True
     for line in lines:
         direction, distance = line.split(' ')
-        rope, visited_positions = move(rope, direction, int(distance), visited_positions)
+        for _ in range(int(distance)):
+            rope, visited_positions = move(rope, direction, visited_positions)
     return len([is_visited for row in visited_positions for is_visited in row if is_visited])
 
 
 def main():
     print(f'Advent of Code 2022 --- Day {DAY} --- Part {PART}')
-
     lines = data.splitlines()
-
     number_of_visited_tail_positions = calculate_number_of_visited_tail_positions(lines, 1000, 1000, 15, 11)
     print(f'The tail of the rope visits {(str(number_of_visited_tail_positions))} positions at least once.')
 
