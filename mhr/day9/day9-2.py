@@ -29,7 +29,7 @@ def load_motions(lines: list[str]) -> list[Motion]:
     return motions
 
 
-def simulate(motions: list[list[Motion]], pose_recorder: list = None) -> int:
+def simulate(motions: list[Motion], pose_recorder: list = None) -> int:
     """Returns: How many positions did the tail visited at least once?"""
     visited = {(0, 0)}  # starting point
 
@@ -118,7 +118,7 @@ class GridDimensions:
     height: int
 
 
-def generate_pose_time_series(motions: list[list[Motion]]) -> list[list[Pose]]:
+def generate_pose_time_series(motions: list[Motion]) -> list[list[Pose]]:
     """Time series = list (one per time stamp) for all poses of the knots."""
     time_series = list()
     simulate(motions, pose_recorder=time_series)
