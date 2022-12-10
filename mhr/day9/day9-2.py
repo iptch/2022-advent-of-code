@@ -1,4 +1,9 @@
 from dataclasses import dataclass
+
+import matplotlib.pyplot as plt
+from matplotlib import animation
+from functools import partial
+
 from common import load_lines
 
 N_KNOTS = 9  # excluding the head knot
@@ -24,7 +29,7 @@ def load_motions(lines: list[str]) -> list[Motion]:
     return motions
 
 
-def simulate(motions: list[Motion]) -> int:
+def simulate(motions: list[list[Motion]], pose_recorder: list = None) -> int:
     """Returns: How many positions did the tail visited at least once?"""
     visited = {(0, 0)}  # starting point
 
@@ -38,6 +43,8 @@ def simulate(motions: list[Motion]) -> int:
                 knot_poses[knot_idx] = update_tail(Pose(curr_head.x, curr_head.y),
                                                    Pose(knot_poses[knot_idx].x, knot_poses[knot_idx].y))
                 visited.add((knot_poses[-1].x, knot_poses[-1].y))
+            if pose_recorder is not None:
+                pose_recorder.append([curr_head] + knot_poses)
     return len(visited)
 
 
@@ -54,7 +61,7 @@ def update_head(head: Pose, direction: str) -> None:
 
 def update_tail(head: Pose, tail: Pose) -> Pose:
     """Returns tail position in any case to potentially add to places visited at least once."""
-    if head == tail or max([abs(dist) for dist in {head.x-tail.x, head.y-tail.y}]):
+    if head == tail or max([abs(dist) for dist in {head.x - tail.x, head.y - tail.y}]):
         pass
 
     hor_dist = head.x - tail.x
@@ -97,8 +104,67 @@ def update_tail(head: Pose, tail: Pose) -> Pose:
     return tail
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+# Below is visualization code only
+# ----------------------------------------------------------------------------------------------------------------------
+
+@dataclass
+class GridDimensions:
+    min_x: int
+    min_y: int
+    max_x: int
+    max_y: int
+    width: int
+    height: int
+
+
+def generate_pose_time_series(motions: list[list[Motion]]) -> list[list[Pose]]:
+    """Time series = list (one per time stamp) for all poses of the knots."""
+    time_series = list()
+    simulate(motions, pose_recorder=time_series)
+    return time_series
+
+
+def get_grid_dimensions(pose_time_series: list[list[Pose]]) -> GridDimensions:
+    x_positions = [pose.x for time in pose_time_series for pose in time]
+    y_positions = [pose.y for time in pose_time_series for pose in time]
+    min_x = min(x_positions)
+    max_x = max(x_positions)
+    min_y = min(y_positions)
+    max_y = max(y_positions)
+    width = (abs(max_x - min_x) + 1) * 2
+    height = (abs(max_y - min_y) + 1) * 2
+    return GridDimensions(min_x, min_y, max_x, max_y, width, height)
+
+
+def frame(pose_time_series: list[list[Pose]], time_idx: int):
+    grid_dimensions = get_grid_dimensions(pose_time_series)
+    grid = [grid_dimensions.width * [10] for _ in range(grid_dimensions.height)]
+    for knot_idx, pose in enumerate(pose_time_series[time_idx]):
+        grid[pose.y + grid_dimensions.height // 2][pose.x + grid_dimensions.width // 2] = knot_idx
+
+    plt.cla()
+    ax = plt.gca()
+    ax.set_xticks([])
+    ax.set_yticks([])
+    image = plt.imshow(grid, cmap='Reds_r')
+    return image
+
+
 if __name__ == '__main__':
-    lines_ = load_lines(day=9, file_name='input.txt')
+    lines_ = load_lines(day=9, file_name='test_input_2.txt')
     motions_ = load_motions(lines_)
+
+    # Solving the task
     n_visited_ = simulate(motions_)
     print(f'Task 2: Tail visited {n_visited_} positions at least once.')
+
+    # Visualize
+    pose_time_series_ = generate_pose_time_series(motions_)
+
+    fig, ax = plt.subplots()
+    grid_dimensions_ = get_grid_dimensions(pose_time_series_)
+    ax.set_xlim(0, grid_dimensions_.width)
+    ax.set_ylim(0, grid_dimensions_.height)
+    ani = animation.FuncAnimation(fig, partial(frame, pose_time_series_), frames=len(pose_time_series_), interval=4)
+    plt.show()
