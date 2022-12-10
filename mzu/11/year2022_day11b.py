@@ -1,7 +1,7 @@
 from aocd import data
 
-DAY = 'x'
-PART = 'a'
+DAY = '11'
+PART = 'b'
 
 
 def solve(lines):

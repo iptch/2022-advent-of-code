@@ -1,6 +1,6 @@
 from aocd import data
 
-DAY = 'x'
+DAY = '11'
 PART = 'a'
 
 

@@ -1,7 +1,7 @@
 import unittest
 
-import year2022_dayxa as part_a
-import year2022_dayxb as part_b
+import year2022_day11a as part_a
+import year2022_day11b as part_b
 
 
 class Test(unittest.TestCase):
