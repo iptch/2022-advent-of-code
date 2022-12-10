@@ -30,7 +30,7 @@ def puzzle_1():
 def puzzle_2():
     result = []
     for i in range(240):
-        result.append(".")
+        result.append(" ")
     input_txt = open("input.txt", "r")
     lines = input_txt.read().splitlines()
     x = 0
