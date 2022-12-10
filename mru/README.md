@@ -68,3 +68,73 @@ Part 2
 ```
 ./day_05/run_part2.py ./day_05/input.txt 
 ```
+
+### Day 6
+
+Part 1
+
+```
+./day_06/run_part1.py ./day_06/input.txt 
+```
+
+Part 2
+
+```
+./day_06/run_part2.py ./day_06/input.txt 
+```
+
+### Day 7
+
+Part 1
+
+```
+./day_07/run_part1.py ./day_07/input.txt 
+```
+
+Part 2
+
+```
+./day_07/run_part2.py ./day_07/input.txt 
+```
+
+### Day 8
+
+Part 1
+
+```
+./day_08/run_part1.py ./day_08/input.txt 
+```
+
+Part 2
+
+```
+./day_08/run_part2.py ./day_08/input.txt 
+```
+
+### Day 9
+
+Part 1
+
+```
+./day_09/run_part1.py ./day_09/input.txt 
+```
+
+Part 2
+
+```
+./day_09/run_part2.py ./day_09/input.txt 
+```
+
+### Day 10
+
+Part 1
+
+```
+./day_10/run_part1.py ./day_10/input.txt 
+```
+
+Part 2
+
+```
+./day_10/run_part2.py ./day_10/input.txt 
+```
