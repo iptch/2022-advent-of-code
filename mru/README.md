@@ -4,7 +4,7 @@
 
 ```
 pyenv virtualenv 3.10.7 aoc
-pyenv install 3.10.7^C
+pyenv install 3.10.7
 pyenv activate aoc
 ```
 
