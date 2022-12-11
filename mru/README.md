@@ -138,3 +138,17 @@ Part 2
 ```
 ./day_10/run_part2.py ./day_10/input.txt 
 ```
+
+### Day 11
+
+Part 1
+
+```
+./day_11/run_part1.py ./day_11/input.txt 
+```
+
+Part 2
+
+```
+./day_11/run_part2.py ./day_11/input.txt 
+```
