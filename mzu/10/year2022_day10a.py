@@ -4,11 +4,11 @@ DAY = '10'
 PART = 'a'
 
 
-def calculate_signal_strength(X, cycles, interesting_cycles):
+def process_cycle(X, cycles, interesting_cycles, total_signal_strength):
+    cycles += 1
     if cycles in interesting_cycles:
-        return X * cycles
-    else:
-        return 0
+        total_signal_strength += X * cycles
+    return cycles, total_signal_strength
 
 
 def solve(lines):
@@ -18,23 +18,18 @@ def solve(lines):
     total_signal_strength = 0
     for line in lines:
         if line == "noop":
-            cycles += 1
-            total_signal_strength += calculate_signal_strength(X, cycles, interesting_cycles)
+            cycles, total_signal_strength = process_cycle(X, cycles, interesting_cycles, total_signal_strength)
         else:
-            cycles += 1
-            total_signal_strength += calculate_signal_strength(X, cycles, interesting_cycles)
-            cycles += 1
-            total_signal_strength += calculate_signal_strength(X, cycles, interesting_cycles)
+            for _ in range(2):
+                cycles, total_signal_strength = process_cycle(X, cycles, interesting_cycles, total_signal_strength)
             X += int(line.split(' ')[1])
     return total_signal_strength
 
 
 def main():
     print(f'Advent of Code 2022 --- Day {DAY} --- Part {PART}')
-
     lines = data.splitlines()
     result = solve(lines)
-    
     print(f'The total signal strength is {str(result)}.')
 
 
