@@ -1,7 +1,5 @@
 use std::collections::HashSet;
 
-const DIST_LIMIT: isize = 2;
-
 fn main() {
     let moves = common::lines("day9-1/assets/input.txt").map(CompoundMove::from);
     let mut head = Position::origin();
@@ -78,30 +76,16 @@ impl Position {
         self.y = y;
     }
 
-    fn squared_distance(&self, other: &Position) -> isize {
-        let x_delta = (other.x - self.x).abs();
-        let y_delta = (other.y - self.y).abs();
-        x_delta.pow(2) + y_delta.pow(2)
-    }
-
     fn follow(&mut self, head: &Position) {
-        if self.squared_distance(head) < DIST_LIMIT + 1 {
-            return
-        }
         let x_diff = head.x - self.x;
         let y_diff = head.y - self.y;
 
-        if x_diff > 1 {
-            self.set(head.x - 1, head.y);
-        }
-        else if x_diff < -1 {
-            self.set(head.x + 1, head.y);
-        }
-        else if y_diff > 1 {
-            self.set(head.x , head.y - 1);
-        }
-        else if y_diff < -1 {
-            self.set(head.x , head.y + 1);
+        match (x_diff, y_diff) {
+            ( 2,  _) => self.set(head.x - 1, head.y),
+            (-2,  _) => self.set(head.x + 1, head.y),
+            ( _,  2) => self.set(head.x , head.y - 1),
+            ( _, -2) => self.set(head.x , head.y + 1),
+            ( _,  _) => {},
         }
     }
 }
