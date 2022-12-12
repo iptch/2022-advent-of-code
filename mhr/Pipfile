@@ -8,6 +8,8 @@ numpy = "*"
 pytest = "*"
 uni-curses = "*"
 matplotlib = "*"
+networkx = "*"
+tqdm = "*"
 
 [dev-packages]
 
