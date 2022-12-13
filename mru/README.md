@@ -152,3 +152,31 @@ Part 2
 ```
 ./day_11/run_part2.py ./day_11/input.txt 
 ```
+
+### Day 12
+
+Part 1
+
+```
+./day_12/run_part1.py ./day_12/input.txt 
+```
+
+Part 2
+
+```
+./day_12/run_part2.py ./day_12/input.txt 
+```
+
+### Day 13
+
+Part 1
+
+```
+./day_13/run_part1.py ./day_13/input.txt 
+```
+
+Part 2
+
+```
+./day_13/run_part2.py ./day_13/input.txt 
+```
