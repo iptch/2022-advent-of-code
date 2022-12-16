@@ -44,6 +44,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "day11-1"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "lazy_static",
+ "regex",
+]
+
+[[package]]
+name = "day11-2"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "lazy_static",
+ "regex",
+]
+
+[[package]]
 name = "day2-1"
 version = "0.1.0"
 dependencies = [
