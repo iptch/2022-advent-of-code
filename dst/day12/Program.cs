@@ -7,8 +7,8 @@ namespace aoc2022
     {
         public static void Main(string[] args)
         {
-            string filepath = "sample_input.txt";
-            // string filepath = "input.txt";
+            // string filepath = "sample_input.txt";
+            string filepath = "input.txt";
 
             // Get grid dimensions
             int n = 0;
@@ -25,42 +25,44 @@ namespace aoc2022
 
             // Read vertices
             int numberOfVertices = n * m;
-            List<char> vertices = new();
+            List<char> vertexValue = new();
             int startVertexIndex = 0;
             int stopVertexIndex = 0;
             using (StreamReader sr = System.IO.File.OpenText(filepath))
             {
                 string? line = "";
+                int linenumber = 0;
                 while ((line = sr.ReadLine()) != null)
                 {
                     for (int i = 0; i < line.Length; i++)
                     {
                         if (line[i] == 'S')
                         {
-                            startVertexIndex = i;
-                            vertices.Add('a');
+                            startVertexIndex = m * linenumber + i;
+                            vertexValue.Add('a');
                         }
                         else if (line[i] == 'E')
                         {
-                            stopVertexIndex = i;
-                            vertices.Add('z');
+                            stopVertexIndex = m * linenumber + i;
+                            vertexValue.Add('z');
                         }
                         else
                         {
-                            vertices.Add(line[i]);
+                            vertexValue.Add(line[i]);
                         }
                     }
+                    linenumber++;
                 }
             }
 
             // Print vertices
-            for (int i = 0; i < vertices.Count(); i++)
+            for (int i = 0; i < vertexValue.Count(); i++)
             {
                 if (i % m == 0)
                 {
                     Console.WriteLine();
                 }
-                Console.Write(vertices[i]);
+                Console.Write(vertexValue[i]);
             }
             Console.WriteLine();
 
@@ -91,7 +93,7 @@ namespace aoc2022
                     }
 
                     // filter for only ascending
-                    if (vertices[j] - vertices[i] > 1)
+                    if (vertexValue[j] - vertexValue[i] > 1)
                     {
                         graph[i, j] = 0;
                     }
@@ -103,7 +105,7 @@ namespace aoc2022
             int column = 2;
             int test_index = row * m + column;
 
-            for (int i = 0; i < vertices.Count(); i++)
+            for (int i = 0; i < vertexValue.Count(); i++)
             {
                 if (i % m == 0)
                 {
@@ -122,22 +124,80 @@ namespace aoc2022
             Console.WriteLine();
 
             // Dijkstra
-            List<int> distance = new(numberOfVertices);
-            List<int> previous = new(numberOfVertices);
-            List<int> queue = new(numberOfVertices);
+            // vertexValues
+            List<int> vertexDistance = new();
+            List<int?> previousVertex = new();
+            List<int> vertexQueue = new();
 
-            for (int i = 0; i < vertices.Count; i++)
+            for (int i = 0; i < vertexValue.Count; i++)
             {
-                distance.Add(int.MaxValue);
-                queue.Add(i);
+                vertexDistance.Add(int.MaxValue);
+                previousVertex.Add(null);
+                vertexQueue.Add(i);
             }
-            distance[startVertexIndex] = 0;
+            vertexDistance[startVertexIndex] = 0;
 
-            while (queue.Count != 0)
+            while (vertexQueue.Any())
             {
-                int u = distance.IndexOf(distance.Min());
-                queue.RemoveAt(queue.IndexOf(u));
+                int minDist = int.MaxValue;
+                int minVertex = 0;
+                for (int i = 0; i < vertexQueue.Count; i++)
+                {
+                    if (vertexDistance[vertexQueue[i]] < minDist)
+                    {
+                        minDist = vertexDistance[vertexQueue[i]];
+                        minVertex = vertexQueue[i];
+                    }
+                }
+                int u = minVertex;
+                vertexQueue.Remove(u);
+                Console.WriteLine("Still in queue: {0}", vertexQueue.Count);
+                foreach (int v in vertexQueue)
+                {
+                    if (graph[u, v] == 1)
+                    {
+                        int alt = vertexDistance[u] + 1;
+                        if (alt < vertexDistance[v])
+                        {
+                            vertexDistance[v] = alt;
+                            previousVertex[v] = u;
+                        }
+                    }
+                }
             }
+
+            //Backtrack for specific vertex
+            int endVertex = stopVertexIndex;
+            List<int?> backtrackList = new();
+            backtrackList.Add(endVertex);
+            int currentVertex = endVertex;
+            while (previousVertex[currentVertex] != startVertexIndex)
+            {
+                backtrackList.Add(previousVertex[currentVertex]);
+                currentVertex = (int)previousVertex[currentVertex];
+            }
+            backtrackList.Add(startVertexIndex);
+
+            for (int i = 0; i < vertexValue.Count(); i++)
+            {
+                if (i % m == 0)
+                {
+                    Console.WriteLine();
+                }
+
+                if (backtrackList.Contains(i))
+                {
+                    Console.Write("X");
+                }
+                else
+                {
+                    Console.Write(".");
+                }
+            }
+            Console.WriteLine();
+            Console.WriteLine();
+
+            Console.WriteLine("Distance to StopVertex: {0}", vertexDistance[stopVertexIndex]);
         }
     }
 }
