@@ -77,5 +77,16 @@ namespace aoc2022
                 }
             }
         }
+            public int cyclicMethod((int, int) round){
+            
+                int result = 0;
+                switch ((round.Item1 - round.Item2) % 3){
+                    case 0: result = 3;
+                    case 1: result = 6;
+                    case 2: result = 0;
+                    default: result = 4;
+                }
+                return result;
+            }
     }
 }
