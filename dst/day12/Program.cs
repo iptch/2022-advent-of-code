@@ -141,25 +141,3 @@ namespace aoc2022
         }
     }
 }
-
-            // Print adjacency graph for one field
-            int row = 1;
-            int column = 3;
-            int vertex = row * width + column;
-            for (int i = 0; i < vertices; i++)
-            {
-                if (i % width == 0)
-                {
-                    Console.WriteLine();
-                    Console.Write("{0}", graph[vertex, i]);
-                }
-                else
-                {
-                    Console.Write("{0}", graph[vertex, i]);
-                }
-            }
-            Console.WriteLine();
-            Console.WriteLine();
-        }
-    }
-}
