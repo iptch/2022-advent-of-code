@@ -6,24 +6,30 @@ def puzzle_1():
     input_txt = open("input.txt", "r")
     lines = input_txt.read().splitlines()
     for pos in range(0, len(lines), 3):
-        left = eval(lines[pos])
-        right = eval(lines[pos+1])
+        left = parse_package(lines[pos])
+        right = parse_package(lines[pos+1])
         if right_order(left, right) < 0:
             result += (pos//3+1)
 
     return result
 
-# some error in this function, used eval instead :facepalm
+# trying not to use eval :)
 def parse_package(data):
-    stack = []
+    stack = [None]
     for char in list(data):
         if char == "[":
-            stack.insert(0, [])
+            if stack[0] is None:
+                stack[0] = []
+            else:
+                stack.insert(0, [])
+            stack.insert(0, None)
         elif char.isnumeric():
             if isinstance(stack[0], str):
                 stack[0] = stack[0] + char
-            else:
+            elif isinstance(stack[0], list):
                 stack.insert(0, char)
+            else:
+                stack[0] = char
         elif char == ",":
             elem = stack.pop(0)
             if isinstance(elem, str):
@@ -34,10 +40,8 @@ def parse_package(data):
             elem = stack.pop(0)
             if isinstance(elem, str):
                 stack[0].append(int(elem))
-            elif len(elem) > 0:
+            elif isinstance(elem, list):
                 stack[0].append(elem)
-            else:
-                stack.insert(0, elem)
     return stack[0]
 
 def right_order(left, right):
@@ -62,8 +66,8 @@ def puzzle_2():
     input_txt = open("input.txt", "r")
     lines = input_txt.read().splitlines()
     for pos in range(0, len(lines), 3):
-        result.append(eval(lines[pos]))
-        result.append(eval(lines[pos+1]))
+        result.append(parse_package(lines[pos]))
+        result.append(parse_package(lines[pos+1]))
 
     result.sort(key=cmp_to_key(right_order))
 
