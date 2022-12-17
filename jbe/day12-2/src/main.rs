@@ -57,7 +57,7 @@ fn dijkstra(map: &Map, start: Node) -> HashMap<Node, usize> {
     distances
 }
 
-#[derive(Copy, Clone, PartialEq, Eq, Hash, Debug)]
+#[derive(Copy, Clone, PartialEq, Eq, Hash)]
 struct Node {
     x: usize,
     y: usize,
@@ -114,7 +114,7 @@ impl Node {
     }
 }
 
-#[derive(Eq, Debug)]
+#[derive(Eq)]
 struct Visit {
     node: Node,
     distance: usize,
