@@ -125,6 +125,7 @@ impl Ord for Visit {
         other.distance.cmp(&self.distance)
     }
 }
+
 impl PartialOrd for Visit {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
         Some(self.cmp(other))
