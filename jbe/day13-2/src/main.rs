@@ -120,8 +120,14 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_solve() {
+    fn test_input_solve() {
         let res = solve("../assets/day13-test.txt");
         assert_eq!(res, 140);
+    }
+
+    #[test]
+    fn test_solve() {
+        let res = solve("../assets/day13.txt");
+        assert_eq!(res, 23868);
     }
 }
