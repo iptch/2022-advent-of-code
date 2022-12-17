@@ -1,16 +1,25 @@
 use std::collections::HashSet;
+use std::path::Path;
 
 const LEN: usize = 10;
 
 fn main() {
-    let moves = common::lines("day9-2/assets/input.txt").map(CompoundMove::from);
+    let res = solve("assets/day9.txt");
+    println!("The number of unique positions are: {res}");
+}
+
+pub fn solve<P>(path: P) -> usize
+where
+    P: AsRef<Path>,
+{
+    let moves = common::lines(path).map(CompoundMove::from);
     let mut rope = vec![Position::origin(); LEN];
     let mut positions = HashSet::new();
     for compound_move in moves {
         let set = compound_move.apply(&mut rope);
         positions = positions.union(&set).map(Clone::clone).collect();
     }
-    println!("The number of unique positions are: {}", positions.len());
+    positions.len()
 }
 
 struct CompoundMove {
@@ -29,8 +38,8 @@ impl CompoundMove {
                 "L" => Move::Left,
                 "U" => Move::Up,
                 "D" => Move::Down,
-                _   => panic!("impossible move"),
-            }
+                _ => panic!("impossible move"),
+            },
         }
     }
 
@@ -39,11 +48,11 @@ impl CompoundMove {
         let len = rope.len();
         for _ in 0..self.count {
             rope[0].move_(&self.move_);
-            for idx in 0..len-1 {
+            for idx in 0..len - 1 {
                 let head = rope[idx].clone();
-                rope[idx+1].follow(&head);
+                rope[idx + 1].follow(&head);
             }
-            res.insert(rope[len-1].clone());
+            res.insert(rope[len - 1].clone());
         }
         res
     }
@@ -56,7 +65,7 @@ enum Move {
     Left,
 }
 
-#[derive(Hash,Clone,PartialEq,Eq)]
+#[derive(Hash, Clone, PartialEq, Eq)]
 struct Position {
     x: isize,
     y: isize,
@@ -86,15 +95,32 @@ impl Position {
         let y_diff = head.y - self.y;
 
         match (x_diff, y_diff) {
-            ( 2,  2) => self.set(head.x - 1, head.y - 1),
-            ( 2, -2) => self.set(head.x - 1, head.y + 1),
+            (2, 2) => self.set(head.x - 1, head.y - 1),
+            (2, -2) => self.set(head.x - 1, head.y + 1),
             (-2, -2) => self.set(head.x + 1, head.y + 1),
-            (-2,  2) => self.set(head.x + 1, head.y - 1),
-            ( 2,  _) => self.set(head.x - 1, head.y),
-            (-2,  _) => self.set(head.x + 1, head.y),
-            ( _,  2) => self.set(head.x , head.y - 1),
-            ( _, -2) => self.set(head.x , head.y + 1),
-            ( _,  _) => {},
+            (-2, 2) => self.set(head.x + 1, head.y - 1),
+            (2, _) => self.set(head.x - 1, head.y),
+            (-2, _) => self.set(head.x + 1, head.y),
+            (_, 2) => self.set(head.x, head.y - 1),
+            (_, -2) => self.set(head.x, head.y + 1),
+            (_, _) => {}
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_input_solve() {
+        let res = solve("../assets/day9-test.txt");
+        assert_eq!(res, 1);
+    }
+
+    #[test]
+    fn test_solve() {
+        let res = solve("../assets/day9.txt");
+        assert_eq!(res, 2482);
     }
 }

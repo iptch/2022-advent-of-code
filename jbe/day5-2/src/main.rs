@@ -1,22 +1,29 @@
 use lazy_static::lazy_static;
 use regex::Regex;
 use std::collections::LinkedList;
+use std::path::Path;
 
 fn main() {
-    let stack_def: Vec<String> = common::lines("day5-2/assets/input.txt")
+    let res = solve("assets/day5.txt");
+    println!("The top of the stacks is: {res}");
+}
+
+pub fn solve<P>(path: P) -> String
+where
+    P: AsRef<Path> + Copy,
+{
+    let stack_def: Vec<String> = common::lines(path)
         .take_while(|line| !line.is_empty())
         .collect();
     let mut stacks = parse_stacks(stack_def);
-    common::lines("day5-2/assets/input.txt")
+    common::lines(path)
         .skip_while(|line| !line.starts_with("move"))
         .map(|line| parse_instruction(&line))
         .for_each(|instr| instr.exec(&mut stacks));
-    let stacks_top = stacks
+    stacks
         .iter()
         .filter_map(|stack| stack.front())
-        .fold(String::new(), |acc, ch| format!("{acc}{ch}"));
-    println!("The top of the stacks is: {stacks_top}");
-
+        .fold(String::new(), |acc, ch| format!("{acc}{ch}"))
 }
 
 struct Move {
@@ -76,4 +83,21 @@ fn parse_stacks(mut lines: Vec<String>) -> Vec<LinkedList<char>> {
     }
 
     res
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_input_solve() {
+        let res = solve("../assets/day5-test.txt");
+        assert_eq!(res, "MCD");
+    }
+
+    #[test]
+    fn test_solve() {
+        let res = solve("../assets/day5.txt");
+        assert_eq!(res, "LVZPSTTCZ");
+    }
 }

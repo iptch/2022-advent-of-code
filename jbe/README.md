@@ -15,6 +15,17 @@ cargo build --all --release
 
 This will use incremental builds, hence caching sub-builds.
 
+## Testing
+
+All exercises implement a test against the sample input given in the question, and the actual input
+that was given to me. These can be launched:
+
+```bash
+cargo test
+# test only a specific day
+cargo test -p day10-1
+```
+
 ## Running
 
 You can run the exercise of a specific day using its package name:

@@ -1,14 +1,23 @@
 use std::collections::{BinaryHeap, HashMap, HashSet};
+use std::path::Path;
 
 const START: u8 = 'S' as u8;
 const END: u8 = 'E' as u8;
 
 fn main() {
-    let map = parse_map(common::lines("day12-1/assets/input.txt"));
+    let res = solve("assets/day12.txt");
+    println!("The shortest distance is {res}");
+}
+
+pub fn solve<P>(path: P) -> usize
+where
+    P: AsRef<Path>,
+{
+    let map = parse_map(common::lines(path));
     let start = find_start(&map).copied().unwrap();
     let end = find_end(&map).copied().unwrap();
     let distances = dijkstra(&map, start);
-    println!("The shortest distance is {}", distances.get(&end).unwrap());
+    *distances.get(&end).unwrap()
 }
 
 fn dijkstra(map: &Map, start: Node) -> HashMap<Node, usize> {
@@ -148,4 +157,21 @@ fn find_start(map: &Map) -> Option<&Node> {
 
 fn find_end(map: &Map) -> Option<&Node> {
     map.iter().flatten().find(|node| node.is_end())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_input_solve() {
+        let res = solve("../assets/day12-test.txt");
+        assert_eq!(res, 31);
+    }
+
+    #[test]
+    fn test_solve() {
+        let res = solve("../assets/day12.txt");
+        assert_eq!(res, 339);
+    }
 }

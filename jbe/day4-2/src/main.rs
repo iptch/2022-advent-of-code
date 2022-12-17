@@ -1,9 +1,18 @@
+use std::path::Path;
+
 fn main() {
-    let count = common::lines("day4-2/assets/input.txt")
+    let res = solve("assets/day4.txt");
+    println!("The number of overlapping ranges is: {res}")
+}
+
+pub fn solve<P>(path: P) -> usize
+where
+    P: AsRef<Path>,
+{
+    common::lines(path)
         .map(|line| parse_line(&line))
         .filter(|(range1, range2)| range1.overlaps(range2))
-        .count();
-    println!("The number of overlapping ranges is: {count}")
+        .count()
 }
 
 struct Range {
@@ -37,4 +46,21 @@ fn parse_line(line: &str) -> (Range, Range) {
             max: max2.parse::<usize>().unwrap(),
         },
     )
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_input_solve() {
+        let res = solve("../assets/day4-test.txt");
+        assert_eq!(res, 4);
+    }
+
+    #[test]
+    fn test_solve() {
+        let res = solve("../assets/day4.txt");
+        assert_eq!(res, 770);
+    }
 }

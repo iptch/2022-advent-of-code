@@ -1,27 +1,35 @@
 use lazy_static::lazy_static;
 use regex::Regex;
+use std::path::Path;
 
 lazy_static! {
     static ref FILE: Regex = Regex::new(r"(?P<size>\d+) (?P<name>\S+)").unwrap();
-    static ref DIR: Regex  = Regex::new(r"dir (?P<name>\S+)").unwrap();
-    static ref CD: Regex   = Regex::new(r"\$ cd (?P<name>\S+)").unwrap();
+    static ref DIR: Regex = Regex::new(r"dir (?P<name>\S+)").unwrap();
+    static ref CD: Regex = Regex::new(r"\$ cd (?P<name>\S+)").unwrap();
 }
 
 fn main() {
+    let res = solve("assets/day7.txt");
+    println!("The sum of the total sizes of these directories is {res}");
+}
+
+pub fn solve<P>(path: P) -> usize
+where
+    P: AsRef<Path>,
+{
     let mut state = State {
         cwd: Vec::new(),
         fs: Node::Directory(Vec::new(), Vec::new()),
     };
 
-    common::lines("day7-1/assets/input.txt").for_each(|statement| state.parse(&statement));
+    common::lines(path).for_each(|statement| state.parse(&statement));
     let nodes = state.fs.flatten();
-    let sum: usize = nodes
+    nodes
         .iter()
         .filter(|node| node.is_dir())
         .map(|node| node.size())
         .filter(|size| *size <= 100000)
-        .sum();
-    println!("The sum of the total sizes of these directories is {sum}");
+        .sum()
 }
 
 #[derive(Clone)]
@@ -39,28 +47,28 @@ impl PartialEq<Node> for Node {
 impl Node {
     fn name(&self) -> String {
         match self {
-            Node::File(path, _)      => path.join("/"),
+            Node::File(path, _) => path.join("/"),
             Node::Directory(path, _) => path.join("/"),
         }
     }
 
     fn size(&self) -> usize {
         match self {
-            Node::File(_, size)          => *size,
+            Node::File(_, size) => *size,
             Node::Directory(_, children) => children.iter().map(|node| node.size()).sum(),
         }
     }
 
     fn is_dir(&self) -> bool {
         match self {
-            Node::File(_, _)      => false,
+            Node::File(_, _) => false,
             Node::Directory(_, _) => true,
         }
     }
 
     fn add_child(&mut self, child: Node) {
         match self {
-            Node::File(_, _)             => panic!("Cannot add child to file node"),
+            Node::File(_, _) => panic!("Cannot add child to file node"),
             Node::Directory(_, children) => {
                 if !children.contains(&child) {
                     children.push(child);
@@ -78,7 +86,7 @@ impl Node {
         }
         match self {
             Node::Directory(_, children) => children.iter_mut().find_map(|node| node.find(path)),
-            _                            => None,
+            _ => None,
         }
     }
 
@@ -124,11 +132,11 @@ impl State {
         let caps = CD.captures(statement).unwrap();
         let name = caps.name("name").unwrap().as_str().to_string();
         match name.as_str() {
-            "/"  => self.cwd = Vec::new(),
+            "/" => self.cwd = Vec::new(),
             ".." => {
                 self.cwd.pop();
-            },
-            _    => self.cwd.push(name),
+            }
+            _ => self.cwd.push(name),
         }
     }
 
@@ -139,5 +147,22 @@ impl State {
         let curr_node = self.fs.find(&path).unwrap();
         path.push(name);
         curr_node.add_child(Node::Directory(path, Vec::new()));
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_input_solve() {
+        let res = solve("../assets/day7-test.txt");
+        assert_eq!(res, 95437);
+    }
+
+    #[test]
+    fn test_solve() {
+        let res = solve("../assets/day7.txt");
+        assert_eq!(res, 1443806);
     }
 }

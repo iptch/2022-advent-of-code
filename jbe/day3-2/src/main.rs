@@ -1,24 +1,39 @@
 #![feature(iter_array_chunks)]
 use std::collections::HashSet;
+use std::path::Path;
 
 const OFFSET_LOWER: usize = 96;
 const OFFSET_UPPER: usize = 64 - 26;
 
 fn main() {
-    let sum: usize = common::lines("day3-2/assets/input.txt")
+    let res = solve1("assets/day3.txt");
+    println!("The sum of badges is: {res}");
+    let res = solve2("assets/day3.txt");
+    println!("The sum of badges is (set_based): {res}");
+}
+
+pub fn solve1<P>(path: P) -> usize
+where
+    P: AsRef<Path>,
+{
+    common::lines(path)
         .array_chunks()
         .map(|[bp1, bp2, bp3]| find_duplicate(&bp1, &bp2, &bp3))
         .filter(|chr| chr.is_some())
         .map(|chr| score(chr.unwrap()))
-        .sum();
-    println!("The sum of badges is: {sum}");
-    let sum_set_based: usize = common::lines("day3-2/assets/input.txt")
+        .sum()
+}
+
+pub fn solve2<P>(path: P) -> usize
+where
+    P: AsRef<Path>,
+{
+    common::lines(path)
         .array_chunks()
         .map(|[bp1, bp2, bp3]| find_duplicate_set_based(&bp1, &bp2, &bp3))
         .filter(|chr| chr.is_some())
         .map(|chr| score(chr.unwrap()))
-        .sum();
-    println!("The sum of badges is (set_based): {sum_set_based}");
+        .sum()
 }
 
 fn score(ch: char) -> usize {
@@ -99,4 +114,33 @@ fn get_sorted(val: &str) -> Vec<char> {
     let mut sorted = val.chars().collect::<Vec<char>>();
     sorted.sort_unstable();
     sorted
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_input_solve1() {
+        let res = solve1("../assets/day3-test.txt");
+        assert_eq!(res, 70);
+    }
+
+    #[test]
+    fn test_solve1() {
+        let res = solve1("../assets/day3.txt");
+        assert_eq!(res, 2488);
+    }
+
+    #[test]
+    fn test_input_solve2() {
+        let res = solve2("../assets/day3-test.txt");
+        assert_eq!(res, 70);
+    }
+
+    #[test]
+    fn test_solve2() {
+        let res = solve2("../assets/day3.txt");
+        assert_eq!(res, 2488);
+    }
 }

@@ -1,15 +1,24 @@
 use std::collections::{BinaryHeap, HashMap, HashSet};
+use std::path::Path;
 
 const START: u8 = 'E' as u8;
 const END: u8 = 'S' as u8;
 const END_BIS: u8 = 'a' as u8;
 
 fn main() {
-    let map = parse_map(common::lines("day12-2/assets/input.txt"));
+    let res = solve("assets/day12.txt");
+    println!("The shortest distance is {res}");
+}
+
+pub fn solve<P>(path: P) -> usize
+where
+    P: AsRef<Path>,
+{
+    let map = parse_map(common::lines(path));
     let start = find_start(&map).copied().unwrap();
     let ends = find_ends(&map);
     let distances = dijkstra(&map, start);
-    let min_dist = distances
+    *distances
         .iter()
         .filter_map(|(node, dist)| {
             if ends.contains(node) {
@@ -19,8 +28,7 @@ fn main() {
             }
         })
         .min()
-        .unwrap();
-    println!("The shortest distance is {min_dist}");
+        .unwrap()
 }
 
 fn dijkstra(map: &Map, start: Node) -> HashMap<Node, usize> {
@@ -165,4 +173,21 @@ fn find_ends(map: &Map) -> HashSet<Node> {
         .filter(|node| node.is_end())
         .map(Clone::clone)
         .collect()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_input_solve() {
+        let res = solve("../assets/day12-test.txt");
+        assert_eq!(res, 29);
+    }
+
+    #[test]
+    fn test_solve() {
+        let res = solve("../assets/day12.txt");
+        assert_eq!(res, 332);
+    }
 }

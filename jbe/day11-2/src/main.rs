@@ -1,6 +1,7 @@
 #![feature(iter_next_chunk)]
 
 use std::collections::HashMap;
+use std::path::Path;
 
 use lazy_static::lazy_static;
 use regex::Regex;
@@ -12,7 +13,15 @@ lazy_static! {
 }
 
 fn main() {
-    let mut lines = common::lines("day11-2/assets/input.txt");
+    let res = solve("assets/day11.txt");
+    println!("Monkey business level is: {res}");
+}
+
+pub fn solve<P>(path: P) -> usize
+where
+    P: AsRef<Path>,
+{
+    let mut lines = common::lines(path);
     let mut monkeys: HashMap<usize, Monkey> = HashMap::new();
     while let Ok(chunk) = lines.next_chunk::<6>() {
         let (id, monkey) = Monkey::from(chunk.concat());
@@ -33,10 +42,7 @@ fn main() {
     let mut monkeys: Vec<Monkey> = monkeys.into_values().collect();
     monkeys.sort_by_key(|monkey| monkey.inspections);
     monkeys.reverse();
-    println!(
-        "Monkey business level is: {}",
-        monkeys[0].inspections * monkeys[1].inspections
-    );
+    monkeys[0].inspections * monkeys[1].inspections
 }
 
 struct Monkey {
@@ -106,19 +112,35 @@ impl Operation {
         match input.split_once(' ').unwrap() {
             ("+", "old") => Operation::Double,
             ("*", "old") => Operation::Power2,
-            ("+", val)   => Operation::Add(val.parse().unwrap()),
-            ("*", val)   => Operation::Multiply(val.parse().unwrap()),
-            _            => panic!("unsupported operation"),
+            ("+", val) => Operation::Add(val.parse().unwrap()),
+            ("*", val) => Operation::Multiply(val.parse().unwrap()),
+            _ => panic!("unsupported operation"),
         }
     }
 
-
     fn execute(&self, on: usize) -> usize {
         match self {
-            Operation::Add(val)      => val + on,
+            Operation::Add(val) => val + on,
             Operation::Multiply(val) => val * on,
-            Operation::Double        => on + on,
-            Operation::Power2        => on * on,
+            Operation::Double => on + on,
+            Operation::Power2 => on * on,
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_input_solve() {
+        let res = solve("../assets/day11-test.txt");
+        assert_eq!(res, 2713310158);
+    }
+
+    #[test]
+    fn test_solve() {
+        let res = solve("../assets/day11.txt");
+        assert_eq!(res, 17673687232);
     }
 }
